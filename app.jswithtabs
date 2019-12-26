@@ -1,0 +1,567 @@
+import { Navigation } from 'react-native-navigation';
+import { registerScreens } from './screens';
+import { AsyncStorage, View } from 'react-native';
+import { Provider } from 'react-redux';
+import configureStore from './src/configureStore';
+import { strings } from './locales/i18n';
+import I18n from 'react-native-i18n';
+import SplashScreen from "react-native-splash-screen";
+const store = configureStore();
+
+registerScreens(store, Provider);
+
+// Navigation.startSingleScreenApp({
+//   screen: {
+//     screen : 'payment'
+//   },
+// });
+
+setTimeout(() => {
+  SplashScreen.hide();
+}, 3000);
+showTabs = () => {
+  Navigation.setRoot({
+    root: { // Don't forget to set the tabbar as root
+      bottomTabs: {
+        children: [
+          {
+            stack: {  // Each `tab` must be in a separate stack
+              children: [
+                {
+                  component: {
+                    name: 'famcamHome'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  fontSize: 12,
+                   text: strings('globalValues.Tab1'),
+                  icon: require('./Images/ic_explore_disabled.png'),
+                  selectedIcon: require('./Images/ic_explore_enabled.png')
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'orders'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: strings('globalValues.Tab2'),
+                  fontSize: 12,
+                  icon: require('./Images/ic_video_disabled.png'),
+                   selectedIcon: require('./Images/video.png')
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'notifications'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: strings('globalValues.Tab3'),
+                fontSize: 12,
+                icon: require('./Images/ic_notification_disabled.png'),
+                selectedIcon: require('./Images/ic_notification_enabled.png')
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'profile'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: strings('globalValues.Tab4'),
+                  fontSize: 12,
+               icon: require('./Images/ic_profile_disabled.png'),
+                 selectedIcon: require('./Images/ic_profile_enabled.png')
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  });
+ 
+  // Navigation.setRoot({
+    
+  //   root: {
+  //     bottomTabs: {
+  //       id: 'BottomTabsId',
+  //       children: [
+  //         {
+  //           component: {
+  //             name: 'famcamHome',
+  //             options: {
+  //               bottomTab: {
+  //                 fontSize: 12,
+  //                 text: strings('globalValues.Tab1'),
+  //                 icon: require('./Images/ic_explore_disabled.png'),
+  //                 selectedIcon: require('./Images/ic_explore_enabled.png')
+                  
+  //               }
+  //             }
+  //           },
+  //         },
+  //         {
+  //           component: {
+  //             name: 'orders',
+  //             options: {
+  //               bottomTab: {
+  //                 text: strings('globalValues.Tab2'),
+  //                 fontSize: 12,
+  //                 icon: require('./Images/ic_video_disabled.png'),
+  //                 selectedIcon: require('./Images/video.png')
+  //               }
+  //             }
+  //           },
+  //         },
+  //         {
+  //           component: {
+  //             name: 'notifications',
+  //             options: {
+  //               bottomTab: {
+  //                 text: strings('globalValues.Tab3'),
+  //                 fontSize: 12,
+  //                 icon: require('./Images/ic_notification_disabled.png'),
+  //                 selectedIcon: require('./Images/ic_notification_enabled.png')
+  //               }
+  //             }
+  //           },
+  //         },
+  //         {
+  //           component: {
+  //             name: 'profile',
+  //             options: {
+  //               bottomTab: {
+  //                 text: strings('globalValues.Tab4'),
+  //                 fontSize: 12,
+  //                 icon: require('./Images/ic_profile_disabled.png'),
+  //                 selectedIcon: require('./Images/ic_profile_enabled.png')
+  //               }
+  //             }
+  //           },
+  //         },
+  //       ],
+  //     }
+  //   }
+  // });
+}
+try {
+  // alert("jjsjsjs")
+  AsyncStorage.getItem('user')
+  .then((response) => {
+    if(response == null) {
+      AsyncStorage.getItem('lang')
+      .then((lang) => {
+        if(lang!=null) {
+          let getlang = JSON.parse(lang);
+          if(getlang=='ar') {
+            console.log('this')
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+            // Navigation.events().registerAppLaunchedListener(() => {
+             
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+             
+            // Navigation.setRoot({
+            //   root: {
+            //     component: {
+            //       name: 'home'
+            //     }
+            //   },
+            // });
+          // });
+            // Navigation.startSingleScreenApp({
+            //   screen: {
+            //     screen : 'home'
+            //   },
+            //   appStyle: {
+            //     orientation: 'portrait'
+            //   }
+            // });
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+            // Navigation.events().registerAppLaunchedListener(() => {
+             
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+             
+            // });
+            // Navigation.events().registerAppLaunchedListener(() => {
+            //   Navigation.setRoot({
+            //     root: {
+            //       stack: {
+            //         children: [
+            //           {
+            //             component: {
+            //               name: 'home'
+            //             }
+            //           }
+            //         ],
+            //       }
+            //     }
+            //   });
+            // });
+            // Navigation.startSingleScreenApp({
+            //   screen: {
+            //     screen : 'home'
+            //   },
+            //   appStyle: {
+            //     orientation: 'portrait'
+            //   }
+            // });
+          }
+        }
+        else {
+          if(I18n.currentLocale()=='ar') {
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+            // Navigation.events().registerAppLaunchedListener(() => {
+             
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+             
+          // });
+            // Navigation.startSingleScreenApp({
+            //   screen: {
+            //     screen : 'home'
+            //   },
+            //   appStyle: {
+            //     orientation: 'portrait'
+            //   }
+            // });
+          }
+          else {
+            
+            I18n.locale = 'en';
+            I18n.currentLocale();
+            // Navigation.events().registerAppLaunchedListener(() => {
+             
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+             
+            // });
+            // Navigation.startSingleScreenApp({
+            //   screen: {
+            //     screen : 'home'
+            //   },
+            //   appStyle: {
+            //     orientation: 'portrait'
+            //   }
+            // });
+          }
+        }
+      })
+    }
+    else {
+    //  AsyncStorage.setItem('user', '')
+    //  AsyncStorage.setItem('lang', 'null')
+      AsyncStorage.getItem('lang')
+      .then((lang) => {
+        if(lang!=null) {
+          let getlang = JSON.parse(lang);
+          if(getlang=='ar') {
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+            Navigation.setDefaultOptions({
+              bottomTabs: {
+                backgroundColor: 'black'
+              },
+              bottomTab: {
+                iconColor: 'white',
+                selectedIconColor: 'pink',
+                textColor: 'white',
+                selectedTextColor: 'pink'
+              }
+            });
+            this.showTabs()
+          //   Navigation.startTabBasedApp({
+          //     tabs: [
+          //   {
+          //     label: strings('globalValues.Tab1'),
+          //     screen: 'famcamHome',
+          //     icon: require('./Images/ic_home_outline.png'),
+          //     selectedIcon: require('./Images/ic_home_filled.png'), // local image asset for the tab icon selected state (optional, iOS only. On Android, Use `tabBarSelectedButtonColor` instead)
+          //     title: 'Home',
+          //   },
+          //   {
+          //     label: strings('globalValues.Tab2'),
+          //     screen: 'orders',
+          //     icon: require('./Images/ic_clipboards_outline.png'),
+          //     selectedIcon: require('./Images/ic_clipboards_filled.png'),
+          //     title: 'Orders',
+          //   },
+          //   {
+          //     label: strings('globalValues.Tab3'),
+          //     screen: 'profile',
+          //     icon: require('./Images/ic_profile_outline.png'),
+          //     selectedIcon: require('./Images/ic_profile_filled.png'),
+          //     title: 'Profile',
+          //   },
+          // ],
+          // tabsStyle: {
+          //   tabBarButtonColor: '#C54C72',
+          //   tabBarLabelColor: '#C54C72',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabBarBackgroundColor: 'white',
+          //   initialTabIndex: 0,
+          //   tabBarTextFontFamily: 'HelveticaNeueLTArabic-Roman'
+          // },
+          // appStyle: {
+          //   orientation: 'portrait',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabFontFamily: 'HelveticaNeueLTArabic-Roman'
+          // },
+          //   })
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+            Navigation.setDefaultOptions({
+              bottomTabs: {
+              
+               
+                currentTabIndex: 2,
+               
+               padding :10, 
+                visible: true,
+                animate: true,
+              
+                },
+                topBar: {
+                visible: false
+                },
+              bottomTab: {
+               
+              
+              }
+            });
+            this.showTabs()
+          //   Navigation.startTabBasedApp({
+          //     tabs: [
+          //       {
+          //         label: strings('globalValues.Tab1'),
+          //         screen: 'famcamHome',
+          //         icon: require('./Images/ic_home_outline.png'),
+          //         selectedIcon: require('./Images/ic_home_filled.png'), // local image asset for the tab icon selected state (optional, iOS only. On Android, Use `tabBarSelectedButtonColor` instead)
+          //         title: 'Home',
+          //       },
+          //       {
+          //         label: strings('globalValues.Tab2'),
+          //         screen: 'orders',
+          //         icon: require('./Images/ic_clipboards_outline.png'),
+          //         selectedIcon: require('./Images/ic_clipboards_filled.png'),
+          //         title: 'Orders',
+          //       },
+          //       {
+          //         label: strings('globalValues.Tab3'),
+          //         screen: 'profile',
+          //         icon: require('./Images/ic_profile_outline.png'),
+          //         selectedIcon: require('./Images/ic_profile_filled.png'),
+          //         title: 'Profile',
+          //       },
+          // ],
+          // tabsStyle: {
+          //   tabBarButtonColor: '#C54C72',
+          //   tabBarLabelColor: '#C54C72',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabBarBackgroundColor: 'white',
+          //   initialTabIndex: 0,
+          //   tabBarTextFontFamily: 'SFUIDisplay-Medium'
+          // },
+          // appStyle: {
+          //   orientation: 'portrait',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabFontFamily: 'SFUIDisplay-Medium'
+          // },
+          //   })
+          }
+        }
+        else {
+          if(I18n.currentLocale()=='ar') {
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+          //   Navigation.startTabBasedApp({
+          //     tabs: [
+          //       {
+          //         label: strings('globalValues.Tab1'),
+          //         screen: 'famcamHome',
+          //         icon: require('./Images/ic_home_outline.png'),
+          //         selectedIcon: require('./Images/ic_home_filled.png'), // local image asset for the tab icon selected state (optional, iOS only. On Android, Use `tabBarSelectedButtonColor` instead)
+          //         title: 'Home',
+          //       },
+          //       {
+          //         label: strings('globalValues.Tab2'),
+          //         screen: 'orders',
+          //         icon: require('./Images/ic_clipboards_outline.png'),
+          //         selectedIcon: require('./Images/ic_clipboards_filled.png'),
+          //         title: 'Orders',
+          //       },
+          //       {
+          //         label: strings('globalValues.Tab3'),
+          //         screen: 'profile',
+          //         icon: require('./Images/ic_profile_outline.png'),
+          //         selectedIcon: require('./Images/ic_profile_filled.png'),
+          //         title: 'Profile',
+          //       },
+          // ],
+          // tabsStyle: {
+          //   tabBarButtonColor: '#C54C72',
+          //   tabBarLabelColor: '#C54C72',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabBarBackgroundColor: 'white',
+          //   initialTabIndex: 0,
+          //   tabBarTextFontFamily: 'HelveticaNeueLTArabic-Roman'
+          // },
+          // appStyle: {
+          //   orientation: 'portrait',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabFontFamily: 'HelveticaNeueLTArabic-Roman'
+          // },
+          //   })
+          this.showTabs()
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+            this.showTabs();
+          //   Navigation.startTabBasedApp({
+          //     tabs: [
+          //       {
+          //         label: strings('globalValues.Tab1'),
+          //         screen: 'famcamHome',
+          //         icon: require('./Images/ic_home_outline.png'),
+          //         selectedIcon: require('./Images/ic_home_filled.png'), // local image asset for the tab icon selected state (optional, iOS only. On Android, Use `tabBarSelectedButtonColor` instead)
+          //         title: 'Home',
+          //       },
+          //       {
+          //         label: strings('globalValues.Tab2'),
+          //         screen: 'orders',
+          //         icon: require('./Images/ic_clipboards_outline.png'),
+          //         selectedIcon: require('./Images/ic_clipboards_filled.png'),
+          //         title: 'Orders',
+          //       },
+          //       {
+          //         label: strings('globalValues.Tab3'),
+          //         screen: 'profile',
+          //         icon: require('./Images/ic_profile_outline.png'),
+          //         selectedIcon: require('./Images/ic_profile_filled.png'),
+          //         title: 'Profile',
+          //       },
+          // ],
+          // tabsStyle: {
+          //   tabBarButtonColor: '#C54C72',
+          //   tabBarLabelColor: '#C54C72',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabBarBackgroundColor: 'white',
+          //   initialTabIndex: 0,
+          //   tabBarTextFontFamily: 'SFUIDisplay-Medium'
+          // },
+          // appStyle: {
+          //   orientation: 'portrait',
+          //   tabBarSelectedButtonColor: '#C54C72',
+          //   tabFontFamily: 'SFUIDisplay-Medium'
+          // },
+          //   })
+          }
+        }
+      })
+
+    }
+  })
+}
+catch(error) {}

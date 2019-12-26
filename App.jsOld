@@ -1,0 +1,362 @@
+import { Navigation } from 'react-native-navigation';
+import { registerScreens } from './screens';
+import { AsyncStorage, View } from 'react-native';
+import { Provider } from 'react-redux';
+import configureStore from './src/configureStore';
+import { strings } from './locales/i18n';
+import I18n from 'react-native-i18n';
+import SplashScreen from "react-native-splash-screen";
+import firebase from 'react-native-firebase';
+import { verticalScale, moderateScale, scale } from 'react-native-size-matters';
+import colors from './theme/colors';
+const store = configureStore();
+
+registerScreens(store, Provider);
+
+firebase.messaging().requestPermission()
+  .then(() => {
+    firebase.messaging().hasPermission()
+  .then(enabled => {
+  if (enabled) {
+  firebase.messaging().getToken().then((token) => {
+    this._onChangeToken(token)
+   });
+    } else {
+      // user doesn't have permission
+    } 
+    });
+  })
+  .catch(error => {
+    // User has rejected permissions  
+  });
+
+
+
+setTimeout(() => {
+  SplashScreen.hide();
+ 
+}, 3000);
+// Navigation.setDefaultOptions({
+//   bottomTabs: {
+//    animate: true,
+//     },
+//    topBar: {
+//    visible: false
+//    },
+ 
+//  bottomTab: {
+//    iconInsets: { top: 3, bottom: 3 },
+//    fontSize: 10
+   
+   
+//  },
+// });
+showTabs = () => {
+  
+  Navigation.setRoot({
+    root: { // Don't forget to set the tabbar as root
+      bottomTabs: {
+        children: [
+          {
+            stack: {  // Each `tab` must be in a separate stack
+              children: [
+                {
+                  component: {
+                    name: 'famcamHome'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  fontSize: moderateScale(10),
+                   text: strings('globalValues.Tab1'),
+                  icon: require('./Images/ic_explore_disabled.png'),
+                  iconInsets: { top: 3, bottom: 3 },
+                  selectedIcon: require('./Images/ic_explore_enabled.png')
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'orders'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: strings('globalValues.Tab2'),
+                  fontSize: moderateScale(10),
+                  iconInsets: { top: 3, bottom: 3 },
+                  icon: require('./Images/ic_video_disabled.png'),
+                   selectedIcon: require('./Images/video.png')
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'notifications'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: strings('globalValues.Tab3'),
+                fontSize: moderateScale(10),
+                iconInsets: { top: 3, bottom: 3 },
+                icon: require('./Images/ic_notification_disabled.png'),
+                selectedIcon: require('./Images/ic_notification_enabled.png')
+                }
+              }
+            }
+          },
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: 'profile'
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: strings('globalValues.Tab4'),
+                  fontSize: moderateScale(10),
+                  iconInsets: { top: 3, bottom: 3 },
+                icon: require('./Images/ic_profile_disabled.png'),
+                 selectedIcon: require('./Images/ic_profile_enabled.png')
+                }
+              },
+              layout: {
+                orientation: ['portrait']
+            }
+            }
+          }
+        ]
+        
+      }
+    }
+  });
+ 
+}
+
+showTabs2 = () => {
+   
+  Navigation.setRoot({
+    root: { //
+  bottomTabs: {
+    id: 'BottomTabsId',
+    children: [
+      {
+        stack: {
+          children: [
+            {
+              component: {
+                name: 'profile',
+              }
+            }],
+          options: {
+            topBar: {
+              visible: false,
+              drawBehind: true,
+
+            },
+            bottomTab: {
+              text: strings('globalValues.Tab4'),
+              icon: require('./Images/ic_profile_disabled.png'),
+              selectedIcon: require('./Images/ic_profile_disabled.png'),
+              iconInsets: { top: 5, bottom: -5 },
+              selectedIconColor: colors.themeColor,
+              
+            },
+            layout: {
+              orientation: ["portrait"],
+            },
+          }
+        }
+      },
+  ],
+    options: {
+      bottomTabs: {
+        
+      }
+    }
+  }
+  }
+});
+}
+try {
+  // alert("jjsjsjs")
+  AsyncStorage.getItem('user')
+  .then((response) => {
+    if(response == null) {
+      AsyncStorage.getItem('lang')
+      .then((lang) => {
+        if(lang!=null) {
+          let getlang = JSON.parse(lang);
+          if(getlang=='ar') {
+            console.log('this')
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+                Navigation.setRoot({
+                  root: {
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+          }
+        }
+        else {
+          if(I18n.currentLocale()=='ar') {
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+                Navigation.setRoot({
+                  root: {
+                
+                    stack: {
+                      children: [
+                        {
+                          component: {
+                            name: 'home'
+                          }
+                        }
+                      ],
+                      options: {
+                        topBar: {
+                        visible: false
+                        }
+                      }
+                    }
+                  }
+                });
+          }
+        }
+      })
+    }
+    else {
+      AsyncStorage.getItem('lang')
+      .then((lang) => {
+        if(lang!=null) {
+          let getlang = JSON.parse(lang);
+          if(getlang=='ar') {
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+            this.showTabs()
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+            Navigation.setDefaultOptions({
+              topBar: {
+              visible: false
+              },
+              animations: {
+                setRoot: {
+                  enabled: 'true', // Optional, used to enable/disable the animation
+                  alpha: {
+                    from: 0,
+                    to: 1,
+                    duration: 400,
+                    startDelay: 100,
+                    interpolation: 'accelerate'
+                  }
+                }
+              },
+            bottomTab: {
+              iconInsets: { top: 3, bottom: 3 },
+              fontSize: moderateScale(10)
+              
+            },
+            
+          });
+            this.showTabs()
+          }
+        }
+        else {
+          if(I18n.currentLocale()=='ar') {
+            I18n.locale = 'ar';
+            I18n.currentLocale();
+            this.showTabs()
+          }
+          else {
+            I18n.locale = 'en';
+            I18n.currentLocale();
+            this.showTabs();
+          }
+        }
+      })
+
+    }
+  })
+}
+catch(error) {}
+_onChangeToken = (token) => {
+  console.log(token, 'token')
+}
+
