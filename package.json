@@ -14,7 +14,7 @@
     "axios": "^0.19.0",
     "jsc-android": "^241213.1.0",
     "react": "16.8.0",
-    "react-native": "0.60.0",
+    "react-native": "0.62.3",
     "react-native-aws3": "0.0.8",
     "react-native-check-box": "2.1.0",
     "react-native-country-picker-modal": "^0.8.0",
